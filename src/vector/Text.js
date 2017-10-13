@@ -1296,6 +1296,13 @@ acgraph.vector.Text.prototype.applyTextOverflow_ = function(opt_line) {
   // Copy ellipsis to avoid overwriting this.ellipsis_ because "..." can be ".." (cut) when resize happened.
   var ellipsis = this.ellipsis_;
 
+  var preLastSegment = line.length > 1 && line[line.length - 2];
+  if (preLastSegment && preLastSegment.elipsisAlreadyApplying) {
+    index = goog.array.indexOf(this.segments_, peekSegment) + 1;
+    goog.array.splice(this.segments_, index, this.segments_.length - index);
+    return;
+  }
+
   if (ellipsisBounds.width > this.textWidthLimit) {
     cutPos = this.cutTextSegment_(this.ellipsis_, peekSegment.getStyle(), 0, this.textWidthLimit, ellipsisBounds, true);
     ellipsis = this.ellipsis_.substring(0, cutPos);
@@ -1361,6 +1368,7 @@ acgraph.vector.Text.prototype.applyTextOverflow_ = function(opt_line) {
       var lastSegmentInline = this.createSegment_(cutText, segment.getStyle(), segment_bounds, ellipsisBounds.width);
       lastSegmentInline.x = segment.x;
       lastSegmentInline.y = segment.y;
+      lastSegmentInline.elipsisAlreadyApplying = true;
 
       if (segment_bounds.width + ellipsisBounds.width > this.textWidthLimit) {
         cutPos = this.cutTextSegment_(this.ellipsis_, peekSegment.getStyle(), segment_bounds.width, this.textWidthLimit, ellipsisBounds, true);
@@ -1580,7 +1588,9 @@ acgraph.vector.Text.prototype.finalizeTextLine = function() {
       segment = goog.array.peek(this.currentLine_);
       var segment_bounds = this.getTextBounds(segment.text, segment.getStyle());
 
-      var cutPos = this.cutTextSegment_(segment.text, segment.getStyle(), 0, this.textWidthLimit, segment_bounds, true);
+
+      var cutLimit = this.textWidthLimit - (this.currentLineWidth_ - segment_bounds.width);
+      var cutPos = this.cutTextSegment_(segment.text, segment.getStyle(), 0, cutLimit, segment_bounds, true);
       var cutText = segment.text.substring(0, cutPos);
       segment_bounds = this.getTextBounds(cutText, segment.getStyle());
       segment.text = cutText;
