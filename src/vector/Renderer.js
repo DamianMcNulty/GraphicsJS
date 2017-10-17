@@ -634,6 +634,15 @@ acgraph.vector.Renderer.prototype.getImageLoader = function() {
 };
 
 
+/**
+ * Whether is image loader.
+ * @return {boolean}
+ */
+acgraph.vector.Renderer.prototype.isImageLoader = function() {
+  return !!(this.imageLoader_ && !this.imageLoader_.isDisposed());
+};
+
+
 //region --- Section Transformations ---
 //----------------------------------------------------------------------------------------------------------------------
 //

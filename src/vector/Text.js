@@ -965,6 +965,7 @@ acgraph.vector.Text.prototype.htmlText = function(opt_value) {
  */
 acgraph.vector.Text.prototype.init_ = function() {
   if (this.segments_.length != 0) {
+    goog.disposeAll(this.segments_, this.textLines_);
     this.textLines_ = [];
     this.segments_ = [];
   }
@@ -1250,7 +1251,6 @@ acgraph.vector.Text.prototype.cutTextSegment_ = function(text, style, a, b, segm
 acgraph.vector.Text.prototype.createSegment_ = function(text, style, bounds, opt_shift) {
   // create segment object
   var segment = new acgraph.vector.TextSegment(text, style);
-  this.registerDisposable(segment);
   segment.baseLine = -bounds.top;
   segment.height = bounds.height;
   segment.width = bounds.width;

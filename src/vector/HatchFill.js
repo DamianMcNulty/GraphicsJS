@@ -372,7 +372,7 @@ acgraph.vector.HatchFill.prototype.pathHelper_ = function(opt_filled) {
   var path = /** @type {acgraph.vector.Path} */(opt_filled ?
       this.path().fill(this.color).stroke('none') :
       this.path().fill('none').stroke(this.color, this.thickness));
-  this.registerDisposable(/** @type {goog.disposable.IDisposable} */(path));
+  // this.registerDisposable(/** @type {goog.disposable.IDisposable} */(path));
   return /** @type {acgraph.vector.Path} */(path);
 };
 
@@ -384,7 +384,7 @@ acgraph.vector.HatchFill.prototype.pathHelper_ = function(opt_filled) {
  */
 acgraph.vector.HatchFill.prototype.onePixelRects_ = function(positions, opt_color) {
   var path = this.path().fill(opt_color || this.color).stroke('none');
-  this.registerDisposable(/** @type {goog.disposable.IDisposable} */(path));
+  // this.registerDisposable(/** @type {goog.disposable.IDisposable} */(path));
   for (var i = 0; i < positions.length; i += 2) {
     var x = positions[i];
     var y = positions[i + 1];
