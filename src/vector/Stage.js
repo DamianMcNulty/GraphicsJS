@@ -1205,13 +1205,12 @@ acgraph.vector.Stage.prototype.finishRendering_ = function() {
   this.dispatchEvent(acgraph.vector.Stage.EventType.RENDER_FINISH);
 
   var imageLoader = acgraph.getRenderer().getImageLoader();
-  this.registerDisposable(imageLoader);
   var isImageLoading = acgraph.getRenderer().isImageLoading();
   if (imageLoader && isImageLoading) {
     if (!this.imageLoadingListener_) {
       this.imageLoadingListener_ = true;
       goog.events.listenOnce(imageLoader, goog.net.EventType.COMPLETE, function(e) {
-        this.imageLoadingListener_ = null;
+        this.imageLoadingListener_ = falsek;
         if (!this.isRendering_)
           this.dispatchEvent(acgraph.vector.Stage.EventType.STAGE_RENDERED);
       }, false, this);
@@ -2159,14 +2158,22 @@ acgraph.vector.Stage.prototype.handleMouseEvent_ = function(e) {
 //  Disposing and export
 //
 //------------------------------------------------------------------------------
+/**
+ Disposes Stage. Removes it from parent layer, nulls links, removes from DOM.
+ */
+acgraph.vector.Stage.prototype.dispose = function() {
+  acgraph.vector.Stage.base(this, 'dispose');
+};
+
+
 /** @inheritDoc */
 acgraph.vector.Stage.prototype.disposeInternal = function() {
   acgraph.vector.Stage.base(this, 'disposeInternal');
 
-  goog.object.forEach(this.charts, function(chart) {
+  for (var chart in this.charts) {
     chart.remove();
-  });
-  goog.object.clear(this.charts);
+    delete this.charts[chart];
+  }
 
   goog.dispose(this.eventHandler_);
   this.eventHandler_ = null;
