@@ -1210,7 +1210,7 @@ acgraph.vector.Stage.prototype.finishRendering_ = function() {
     if (!this.imageLoadingListener_) {
       this.imageLoadingListener_ = true;
       goog.events.listenOnce(imageLoader, goog.net.EventType.COMPLETE, function(e) {
-        this.imageLoadingListener_ = falsek;
+        this.imageLoadingListener_ = false;
         if (!this.isRendering_)
           this.dispatchEvent(acgraph.vector.Stage.EventType.STAGE_RENDERED);
       }, false, this);
@@ -2170,10 +2170,10 @@ acgraph.vector.Stage.prototype.dispose = function() {
 acgraph.vector.Stage.prototype.disposeInternal = function() {
   acgraph.vector.Stage.base(this, 'disposeInternal');
 
-  for (var chart in this.charts) {
-    chart.remove();
-    delete this.charts[chart];
-  }
+  goog.object.forEach(this.charts, function(value, key, arr) {
+    value.remove();
+    delete arr[value];
+  });
 
   goog.dispose(this.eventHandler_);
   this.eventHandler_ = null;
