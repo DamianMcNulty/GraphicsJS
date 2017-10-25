@@ -1358,7 +1358,7 @@ acgraph.vector.svg.Renderer.prototype.setPathProperties = function(path) {
  */
 acgraph.vector.svg.Renderer.prototype.createClip_ = function(element, clipElement) {
   var stage = element.getStage();
-  stage.registerDisposable(clipElement);
+  // stage.registerDisposable(clipElement);
   /** @type {!acgraph.vector.svg.Defs} */
   var defs = /** @type {!acgraph.vector.svg.Defs} */ (stage.getDefs());
   /** @type {Element} */

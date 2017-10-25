@@ -2183,6 +2183,7 @@ acgraph.vector.Stage.prototype.disposeInternal = function() {
 
   goog.dispose(this.rootLayer_);
   this.renderInternal();
+
   this.rootLayer_.finalizeDisposing();
   delete this.rootLayer_;
 
